@@ -33,9 +33,9 @@ cp .env.example .env
    DB_CONNECTION=mysql
    DB_HOST=127.0.0.1
    DB_PORT=3306
-   DB_DATABASE=projectm
+   DB_DATABASE=pmo
    DB_USERNAME=root
-   DB_PASSWORD=
+   DB_PASSWORD=root
    ```
 3. Jalankan perintah berikut di terminal untuk generate key dan mengisi struktur tabel beserta data awal:
    ```bash
