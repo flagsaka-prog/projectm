@@ -1,0 +1,100 @@
+# ============================================================
+#  .htaccess untuk Laravel di InfinityFree (infinityfreeapp.com)
+#  Letakkan file ini di ROOT PROJECT (bukan di folder /public)
+# ============================================================
+
+# --------------------------------------------------------------
+# 1. OPSI DASAR
+# --------------------------------------------------------------
+Options -Indexes
+Options +FollowSymLinks
+Options -MultiViews
+
+AddDefaultCharset UTF-8
+
+# --------------------------------------------------------------
+# 2. ARAHKAN SEMUA REQUEST KE /public (Laravel Entry Point)
+# --------------------------------------------------------------
+RewriteEngine On
+
+# Force HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Jika request bukan file/folder yang ada, arahkan ke /public
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(.*)$ /public/$1 [L]
+
+# --------------------------------------------------------------
+# 3. BLOKIR AKSES LANGSUNG KE FILE SENSITIF LARAVEL
+# --------------------------------------------------------------
+<FilesMatch "(^\.env|\.env\.*|composer\.(json|lock)|artisan|server\.php|package\.json|webpack\.mix\.js|README\.md|\.gitignore|\.gitattributes)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Blokir akses ke folder penting Laravel
+RedirectMatch 403 ^/app/.*$
+RedirectMatch 403 ^/bootstrap/.*$
+RedirectMatch 403 ^/config/.*$
+RedirectMatch 403 ^/database/.*$
+# RedirectMatch 403 ^/resources/.*$
+RedirectMatch 403 ^/routes/.*$
+RedirectMatch 403 ^/storage/.*$
+RedirectMatch 403 ^/tests/.*$
+RedirectMatch 403 ^/vendor/.*$
+RedirectMatch 403 ^/\.git/.*$
+
+# --------------------------------------------------------------
+# 4. SECURITY HEADERS
+# --------------------------------------------------------------
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
+# --------------------------------------------------------------
+# 5. KOMPRESI GZIP
+# --------------------------------------------------------------
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css
+    AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript
+    AddOutputFilterByType DEFLATE application/json application/xml application/xhtml+xml
+    AddOutputFilterByType DEFLATE image/svg+xml font/ttf font/otf font/woff font/woff2
+</IfModule>
+
+# --------------------------------------------------------------
+# 6. BROWSER CACHING
+# --------------------------------------------------------------
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpg          "access plus 1 year"
+    ExpiresByType image/jpeg         "access plus 1 year"
+    ExpiresByType image/gif          "access plus 1 year"
+    ExpiresByType image/png          "access plus 1 year"
+    ExpiresByType image/webp         "access plus 1 year"
+    ExpiresByType image/svg+xml      "access plus 1 year"
+    ExpiresByType image/x-icon       "access plus 1 year"
+    ExpiresByType font/ttf           "access plus 1 year"
+    ExpiresByType font/woff          "access plus 1 year"
+    ExpiresByType font/woff2         "access plus 1 year"
+    ExpiresByType text/css           "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType text/html          "access plus 0 seconds"
+</IfModule>
+
+# --------------------------------------------------------------
+# 7. PHP SETTINGS (sesuai limit InfinityFree)
+# --------------------------------------------------------------
+php_value upload_max_filesize 10M
+php_value post_max_size 10M
+php_value max_execution_time 60
+php_value max_input_time 60
+php_value memory_limit 128M
+
+# ============================================================
+#  END OF ROOT .htaccess
+# ============================================================
