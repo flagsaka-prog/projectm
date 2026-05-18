@@ -27,7 +27,7 @@ cp .env.example .env
 *Buka file `.env` yang baru dibuat dan sesuaikan konfigurasi database Anda.*
 
 ### 4. Setup Database & Generate Key
-1. Buat database baru kosong di MySQL Anda (misal melalui phpMyAdmin) dengan nama `projectm`.
+1. Buat database baru kosong di MySQL Anda (misal melalui phpMyAdmin) dengan nama `pmo`.
 2. Buka file `.env` Anda, lalu sesuaikan bagian konfigurasi database berikut:
    ```env
    DB_CONNECTION=mysql
